@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='/css/main.css'>
+
+</head>
+
+<body>
+    <h1>scientific calculator</h1>
+    <div class="calculator">
+        <div class="clac-container">
+            <div class="output">
+                <div class="operation">
+                    <div id="op-input" class="value"></div>
+                </div>
+
+                <div class="result">
+                    <div id="op-result" class="value">0</div>
+                </div>
+            </div>
+
+            <div class="input">
+                <div class="row">
+                    <div class="btn">
+                        <button data-input value="clear" id="clear" class="clear">C</button>
+                    </div>
+                    <div class="btn">
+                        <button data-input value="back" id="back" class="back">&#9664;</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="btn">
+                        <button data-input value="MC">MC</button>
+                    </div>
+                    <div class="btn">
+                        <button data-input value="MR">MR</button>
+                    </div>
+                    <div class="btn">
+                        <button data-input value="M+">M+</button>
+                    </div>
+                    <div class="btn">
+                        <button data-input value="M-">M-</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="btn">
+                        <button data-input value="MS">MS</button>
+                    </div>
+                    <div class="btn">
+                        <select name="Trigonometry" id="Trigonometry">
+                            <option value="gj">Trigonometry</option>
+                            <option value="sin">Sin()</option>
+                            <option value="cos">Cos()</option>
+                            <option value="tan">Tan()</option>
+                            <option value="cot">Cot()</option>
+                            <option value="sec">Sec()</option>
+                            <option value="cosec">Cosec()</option>
+                        </select>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="btn">
+                        <button data-input value="**">exp</button>
+                    </div>
+                    <div class="btn">
+                        <button data-input value="%">mod</button>
+                    </div>
+                    <div class="btn">
+                        <button data-input value="pi">&pi;</button>
+                    </div>
+                    <div class="btn">
+                        <button data-input value="e">&ee;</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="btn">
+                        <button data-input value="square">x<sup>2</sup></button>
+                    </div>
+                    <div class="btn">
+                        <button data-input value="sqrt">2&Sqrt;x</button>
+                    </div>
+                    <div class="btn">
+                        <button data-input value="inverse">1 / x</button>
+                    </div>
+                    <div class="btn">
+                        <button data-input value="abs">| x |</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="btn">
+                        <button data-input value="pow">x<sup>y</sup></button>
+                    </div>
+                    <div class="btn">
+                        <button data-input value="fact">n!</button>
+                    </div>
+                    <div class="btn">
+                        <button data-input value="(">(</button>
+                    </div>
+                    <div class="btn">
+                        <button data-input value=")">)</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="btn">
+                        <button data-input value="10pow">10<sup>x</sup></button>
+                    </div>
+                    <div class="btn">
+                        <button data-input value="log10">log</button>
+                    </div>
+                    <div class="btn">
+                        <button data-input value="log2">ln</button>
+                    </div>
+                    <div class="btn">
+                        <button data-input value="/" class="op-btn">&divide;</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="btn">
+                        <button data-input value="7">7</button>
+                    </div>
+                    <div class="btn">
+                        <button data-input value="8">8</button>
+                    </div>
+                    <div class="btn">
+                        <button data-input value="9">9</button>
+                    </div>
+                    <div class="btn">
+                        <button data-input value="*" class="op-btn">&Cross;</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="btn">
+                        <button data-input value="4">4</button>
+                    </div>
+                    <div class="btn">
+                        <button data-input value="5">5</button>
+                    </div>
+                    <div class="btn">
+                        <button data-input value="6">6</button>
+                    </div>
+                    <div class="btn">
+                        <button data-input value="-" class="op-btn">&minus;</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="btn">
+                        <button data-input value="1">1</button>
+                    </div>
+                    <div class="btn">
+                        <button data-input value="2">2</button>
+                    </div>
+                    <div class="btn">
+                        <button data-input value="3">3</button>
+                    </div>
+                    <div class="btn">
+                        <button data-input value="+" class="op-btn">&plus;</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="btn">
+                        <button data-input value="plus_minus" class="op-btn">&PlusMinus;</button>
+                    </div>
+                    <div class="btn">
+                        <button data-input value="0">0</button>
+                    </div>
+                    <div class="btn">
+                        <button data-input value="." class="op-btn"><sub>&centerdot;</sub></button>
+                    </div>
+                    <div class="btn">
+                        <button data-input value="=" id="equal" class="op-btn">&equals;</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src='/js/main.js'></script>
+
+</body>
+
+</html>
