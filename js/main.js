@@ -167,7 +167,7 @@ document.onkeydown = function (event) {
         case ")":
         case "**":
             let string = event.key
-            display(string)
+            append_input(string)
             break;
 
         case "Enter":
