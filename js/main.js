@@ -1,6 +1,8 @@
 let string = ""
 const op_list = ["+", "-", "/", "*", "%", "."]
 var memory_storage = []
+let inputOnDisplay = document.querySelector("#op-input")
+let resultOnDisplay = document.querySelector("#op-result")
 
 let btns = document.querySelectorAll("button");
 btns.forEach(btn => {
@@ -119,8 +121,8 @@ btns.forEach(btn => {
 
 let selector = document.getElementById("Trigonometry");
 
-selector.addEventListener("change", () => {
-    let string = document.querySelector("#op-input").innerHTML
+selector.addEventListener("input", () => {
+    let string = inputOnDisplay.innerHTML
     switch (selector.value) {
         case "sin":
             op_sin(string)
@@ -185,15 +187,15 @@ document.onkeydown = function (event) {
 
 
 function display(string) {
-    document.querySelector("#op-input").append(string)
+    inputOnDisplay.append(string)
 }
 
 function append_input(input) {
     if (op_list.includes(input)) {
-        let string = document.querySelector("#op-input").innerHTML
+        let string = inputOnDisplay.innerHTML
         display(input)
         if (op_list.includes(string[string.length - 1])) {
-            document.querySelector("#op-input").innerHTML = ""
+            inputOnDisplay.innerHTML = ""
             string = string.slice(0, -1)
             string += input
             display(string)
@@ -205,10 +207,16 @@ function append_input(input) {
 
 
 function evaluate() {
-    if (document.querySelector("#op-input").innerHTML != "") {
-        let result = eval(document.querySelector("#op-input").innerHTML)
-        document.querySelector("#op-input").innerHTML = result
-        document.querySelector("#op-result").innerHTML = result
+    if (inputOnDisplay.innerHTML != "") {
+        if (inputOnDisplay.innerHTML.includes("/0")) {
+            inputOnDisplay.innerHTML = undefined
+            resultOnDisplay.innerHTML = undefined
+
+        } else {
+            let result = eval(inputOnDisplay.innerHTML)
+            inputOnDisplay.innerHTML = result
+            resultOnDisplay.innerHTML = result
+        }
     } else {
         alert("enter something to evaluate")
     }
@@ -217,21 +225,18 @@ function evaluate() {
 
 function clear_screen() {
     let string = ""
-    document.querySelector("#op-input").innerHTML = string
-    document.querySelector("#op-result").innerHTML = "0"
+    inputOnDisplay.innerHTML = string
+    resultOnDisplay.innerHTML = "0"
 }
 
 function back() {
-    let string = document.querySelector("#op-input").innerHTML
+    let string = inputOnDisplay.innerHTML
     string = string.slice(0, -1)
-    document.querySelector("#op-input").innerHTML = string
-    if (document.querySelector("#op-result").innerHTML != "0") {
-        document.querySelector("#op-result").innerHTML = string
-    }
+    inputOnDisplay.innerHTML = string
 }
 
 function plus_minus_toggle() {
-    let string = document.querySelector("#op-input").innerHTML
+    let string = inputOnDisplay.innerHTML
     if (string[(string.length - 1)] == "+") {
         string = string.slice(0, -1)
         string += "-"
@@ -241,7 +246,7 @@ function plus_minus_toggle() {
     } else if (string[string.length - 1] != "+" || string[string.length - 1] !== "-") {
         string = string += "+"
     }
-    document.querySelector("#op-input").innerHTML = string
+    inputOnDisplay.innerHTML = string
 
 }
 
@@ -254,22 +259,22 @@ function e_value() {
 }
 
 function log10_handler() {
-    if (document.querySelector("#op-input").innerHTML != "") {
-        let string = document.querySelector("#op-input").innerHTML
-        document.querySelector("#op-input").innerHTML = ""
+    if (inputOnDisplay.innerHTML != "") {
+        let string = inputOnDisplay.innerHTML
+        inputOnDisplay.innerHTML = ""
         let result = log_base(string, 10)
         display(result)
-        document.querySelector("#op-result").innerHTML = result
+        resultOnDisplay.innerHTML = result
     }
 }
 
 function log2_handler() {
-    if (document.querySelector("#op-input").innerHTML != "") {
-        let string = document.querySelector("#op-input").innerHTML
-        document.querySelector("#op-input").innerHTML = ""
+    if (inputOnDisplay.innerHTML != "") {
+        let string = inputOnDisplay.innerHTML
+        inputOnDisplay.innerHTML = ""
         let result = log_base(string, 2)
         display(result)
-        document.querySelector("#op-result").innerHTML = result
+        resultOnDisplay.innerHTML = result
     }
 }
 
@@ -283,58 +288,58 @@ function log_base(value, base) {
 }
 
 function square() {
-    if (document.querySelector("#op-input").innerHTML != "") {
-        let string = document.querySelector("#op-input").innerHTML
-        document.querySelector("#op-input").innerHTML = ""
+    if (inputOnDisplay.innerHTML != "") {
+        let string = inputOnDisplay.innerHTML
+        inputOnDisplay.innerHTML = ""
         let result = string * string
         display(result)
-        document.querySelector("#op-result").innerHTML = result
+        resultOnDisplay.innerHTML = result
     }
 }
 
 function sqrt() {
-    if (document.querySelector("#op-input").innerHTML != "") {
-        let string = document.querySelector("#op-input").innerHTML
-        document.querySelector("#op-input").innerHTML = ""
+    if (inputOnDisplay.innerHTML != "") {
+        let string = inputOnDisplay.innerHTML
+        inputOnDisplay.innerHTML = ""
         let result = string ** 0.5
         display(result)
-        document.querySelector("#op-result").innerHTML = result
+        resultOnDisplay.innerHTML = result
     }
 }
 
 function inverse() {
-    let string = document.querySelector("#op-input").innerHTML
-    document.querySelector("#op-input").innerHTML = ""
+    let string = inputOnDisplay.innerHTML
+    inputOnDisplay.innerHTML = ""
     let result = 1 / string
     display(result)
-    document.querySelector("#op-result").innerHTML = result
+    resultOnDisplay.innerHTML = result
 }
 
 function abs() {
-    if (document.querySelector("#op-input").innerHTML != "") {
-        let string = document.querySelector("#op-input").innerHTML
+    if (inputOnDisplay.innerHTML != "") {
+        let string = inputOnDisplay.innerHTML
         let index = string.lastIndexOf("-")
         let result = string.substring(0, index) + string.substring(index + 1);
-        document.querySelector("#op-input").innerHTML = ""
+        inputOnDisplay.innerHTML = ""
         display(result)
-        document.querySelector("#op-result").innerHTML = result
+        resultOnDisplay.innerHTML = result
     }
 }
 
 function pow() {
-    let string = document.querySelector("#op-input").innerHTML
+    let string = inputOnDisplay.innerHTML
     if (string != "" && string.slice(-2) != "**") {
         display("**")
     }
 }
 
 function fact() {
-    if (document.querySelector("#op-input").innerHTML != "") {
-        let string = document.querySelector("#op-input").innerHTML
-        document.querySelector("#op-input").innerHTML = ""
+    if (inputOnDisplay.innerHTML != "") {
+        let string = inputOnDisplay.innerHTML
+        inputOnDisplay.innerHTML = ""
         let result = factorial(string)
         display(result)
-        document.querySelector("#op-result").innerHTML = result
+        resultOnDisplay.innerHTML = result
     }
 }
 
@@ -347,7 +352,7 @@ function factorial(n) {
 }
 
 function _10pow() {
-    let string = document.querySelector("#op-input").innerHTML
+    let string = inputOnDisplay.innerHTML
     if (string != "" && string.slice(-5) != "*10**") {
         display("*10**")
     }
@@ -355,79 +360,79 @@ function _10pow() {
 
 function op_sin(degree) {
     let result = Math.sin(degree * Math.PI / 180)
-    document.querySelector("#op-input").innerHTML = ""
+    inputOnDisplay.innerHTML = ""
     display(result)
-    document.querySelector("#op-result").innerHTML = result
+    resultOnDisplay.innerHTML = result
 }
 
 function op_cos(degree) {
     let result = Math.cos(degree * Math.PI / 180)
-    document.querySelector("#op-input").innerHTML = ""
+    inputOnDisplay.innerHTML = ""
     display(result)
-    document.querySelector("#op-result").innerHTML = result
+    resultOnDisplay.innerHTML = result
 }
 
 function op_tan(degree) {
     let result = Math.tan(degree * Math.PI / 180)
-    document.querySelector("#op-input").innerHTML = ""
+    inputOnDisplay.innerHTML = ""
     display(result)
-    document.querySelector("#op-result").innerHTML = result
+    resultOnDisplay.innerHTML = result
 }
 
 function op_cot(degree) {
     let result = 1 / Math.tan(degree * Math.PI / 180)
-    document.querySelector("#op-input").innerHTML = ""
+    inputOnDisplay.innerHTML = ""
     display(result)
-    document.querySelector("#op-result").innerHTML = result
+    resultOnDisplay.innerHTML = result
 }
 
 function op_sec(degree) {
     let result = 1 / Math.cos(degree * Math.PI / 180)
-    document.querySelector("#op-input").innerHTML = ""
+    inputOnDisplay.innerHTML = ""
     display(result)
-    document.querySelector("#op-result").innerHTML = result
+    resultOnDisplay.innerHTML = result
 }
 
 function op_cosec(degree) {
     let result = 1 / Math.sin(degree * Math.PI / 180)
-    document.querySelector("#op-input").innerHTML = ""
+    inputOnDisplay.innerHTML = ""
     display(result)
-    document.querySelector("#op-result").innerHTML = result
+    resultOnDisplay.innerHTML = result
 }
 
-function mc(){
+function mc() {
     memory_storage = []
-    
+
 }
-function mr(){
+function mr() {
     let last_item = memory_storage[memory_storage.length - 1]
-    document.querySelector("#op-input").innerHTML = ""
+    inputOnDisplay.innerHTML = ""
     display(last_item)
-    document.querySelector("#op-result").innerHTML = last_item
+    resultOnDisplay.innerHTML = last_item
 }
-function ms(){
-    let string = document.querySelector("#op-input").innerHTML
+function ms() {
+    let string = inputOnDisplay.innerHTML
     let int = parseInt(string)
     memory_storage.push(int)
 }
-function m_plus(){
-    let string = document.querySelector("#op-input").innerHTML
-    let int  = parseInt(string)
+function m_plus() {
+    let string = inputOnDisplay.innerHTML
+    let int = parseInt(string)
     let last_item = memory_storage[memory_storage.length - 1]
     last_item += int
     memory_storage[memory_storage.length - 1] = last_item
-    document.querySelector("#op-input").innerHTML = ""
+    inputOnDisplay.innerHTML = ""
     display(last_item)
-    document.querySelector("#op-result").innerHTML = last_item
+    resultOnDisplay.innerHTML = last_item
 }
-function m_minus(){
-    let string = document.querySelector("#op-input").innerHTML
-    let int  = parseInt(string)
+function m_minus() {
+    let string = inputOnDisplay.innerHTML
+    let int = parseInt(string)
     let last_item = memory_storage[memory_storage.length - 1]
     last_item -= int
     memory_storage[memory_storage.length - 1] = last_item
-    document.querySelector("#op-input").innerHTML = ""
+    inputOnDisplay.innerHTML = ""
     display(last_item)
-    document.querySelector("#op-result").innerHTML = last_item
+    resultOnDisplay.innerHTML = last_item
 }
 
