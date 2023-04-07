@@ -60,7 +60,7 @@ btns.forEach(btn => {
             break;
 
         case "log2":
-            btn.addEventListener("click", log2_handler)
+            btn.addEventListener("click", ln_handler)
             break;
 
         case "square":
@@ -80,7 +80,6 @@ btns.forEach(btn => {
             break;
 
         case "pow":
-        case "**":
             btn.addEventListener("click", pow)
             break;
 
@@ -89,6 +88,7 @@ btns.forEach(btn => {
             break;
 
         case "10pow":
+        case "**":
             btn.addEventListener("click", _10pow)
             break;
 
@@ -121,7 +121,7 @@ btns.forEach(btn => {
 
 let selector = document.getElementById("Trigonometry");
 
-selector.addEventListener("input", () => {
+selector.addEventListener("click", () => {
     let string = inputOnDisplay.innerHTML
     switch (selector.value) {
         case "sin":
@@ -168,17 +168,21 @@ document.onkeydown = function (event) {
         case "(":
         case ")":
         case "**":
+            document.activeElement.blur();
             let string = event.key
             append_input(string)
             break;
 
         case "Enter":
-            evaluate()
+            document.activeElement.blur();
+            evaluate();
             break;
 
         case "Backspace":
+            document.activeElement.blur();
             back()
             break;
+
     }
 }
 
@@ -208,13 +212,21 @@ function append_input(input) {
 
 function evaluate() {
     if (inputOnDisplay.innerHTML != "") {
-        if (inputOnDisplay.innerHTML.includes("/0")) {
-            inputOnDisplay.innerHTML = undefined
+        let string = inputOnDisplay
+        if (string.innerHTML.includes("1/0")) {
+            string.innerHTML = ""
+            resultOnDisplay.innerHTML = Infinity
+        } else if (string.innerHTML.includes("/0")) {
+            string.innerHTML = ""
             resultOnDisplay.innerHTML = undefined
 
+        } else if (string.innerHTML[0] == "*" | string.innerHTML[0] == "/" | string.innerHTML[0] == "%") {
+            alert("there is invalid operator at first place so can't evaluate")
+            clear_screen();
+
         } else {
-            let result = eval(inputOnDisplay.innerHTML)
-            inputOnDisplay.innerHTML = result
+            let result = eval(string.innerHTML)
+            string.innerHTML = ""
             resultOnDisplay.innerHTML = result
         }
     } else {
@@ -237,25 +249,46 @@ function back() {
 
 function plus_minus_toggle() {
     let string = inputOnDisplay.innerHTML
-    if (string[(string.length - 1)] == "+") {
-        string = string.slice(0, -1)
-        string += "-"
-    } else if (string[(string.length - 1)] == "-") {
-        string = string.slice(0, -1)
-        string += "+"
-    } else if (string[string.length - 1] != "+" || string[string.length - 1] !== "-") {
-        string = string += "+"
+    let index_of_last_plus_minus = string.lastIndexOf("+")
+    if (index_of_last_plus_minus == -1) {
+        index_of_last_plus_minus = string.lastIndexOf("-")
+    } else {
+        string = "+" + string
+        index_of_last_plus_minus = 0;
     }
-    inputOnDisplay.innerHTML = string
+    if (string.charAt(index_of_last_plus_minus) == "+") {
+        string[index_of_last_plus_minus] = "-"
+    } else if (string.charAt(index_of_last_plus_minus) == "-") {
+        string[index_of_last_plus_minus] = "+"
+    }
+    // if (string[(string.length - 1)] == "+") {
+    //     string = string.slice(0, -1)
+    //     string += "-"
+    // } else if (string[(string.length - 1)] == "-") {
+    //     string = string.slice(0, -1)
+    //     string += "+"
+    // } else if (string[string.length - 1] != "+" || string[string.length - 1] !== "-") {
+    //     string = string += "+"
+    // }
+    // inputOnDisplay.innerHTML = string
 
 }
 
 function pi_value() {
-    display(3.1416)
+    let string = inputOnDisplay.innerHTML
+    if (string.endsWith("3.1416")) {
+    } else {
+        display(3.1416)
+    }
 }
 
 function e_value() {
-    display(2.7183)
+    let string = inputOnDisplay.innerHTML
+    if (string.endsWith("2.7183")) {
+
+    } else {
+        display(2.7183)
+    }
 }
 
 function log10_handler() {
@@ -263,17 +296,15 @@ function log10_handler() {
         let string = inputOnDisplay.innerHTML
         inputOnDisplay.innerHTML = ""
         let result = log_base(string, 10)
-        display(result)
         resultOnDisplay.innerHTML = result
     }
 }
 
-function log2_handler() {
+function ln_handler() {
     if (inputOnDisplay.innerHTML != "") {
         let string = inputOnDisplay.innerHTML
         inputOnDisplay.innerHTML = ""
-        let result = log_base(string, 2)
-        display(result)
+        let result = log_e(string)
         resultOnDisplay.innerHTML = result
     }
 }
@@ -292,7 +323,6 @@ function square() {
         let string = inputOnDisplay.innerHTML
         inputOnDisplay.innerHTML = ""
         let result = string * string
-        display(result)
         resultOnDisplay.innerHTML = result
     }
 }
@@ -302,26 +332,36 @@ function sqrt() {
         let string = inputOnDisplay.innerHTML
         inputOnDisplay.innerHTML = ""
         let result = string ** 0.5
-        display(result)
         resultOnDisplay.innerHTML = result
     }
 }
 
 function inverse() {
     let string = inputOnDisplay.innerHTML
+    let result = 0;
     inputOnDisplay.innerHTML = ""
-    let result = 1 / string
-    display(result)
-    resultOnDisplay.innerHTML = result
+    if (string == 0 | string == '0' | string == null | string == undefined) {
+        result = 0;
+    } else {
+        result = 1 / string;
+    }
+    if (result == 0 | result == '0' | result == null | result == undefined | result == 'NaN' | isNaN(result)) {
+        alert("you can not find inverse of this or nothing to inverse")
+        clear_screen()
+    }
+    else {
+        resultOnDisplay.innerHTML = result;
+    }
 }
 
 function abs() {
     if (inputOnDisplay.innerHTML != "") {
         let string = inputOnDisplay.innerHTML
-        let index = string.lastIndexOf("-")
-        let result = string.substring(0, index) + string.substring(index + 1);
+        result = String(eval(string))
         inputOnDisplay.innerHTML = ""
-        display(result)
+        if (result.includes("-")) {
+            result = result.slice(1, result.length)
+        }
         resultOnDisplay.innerHTML = result
     }
 }
@@ -333,23 +373,19 @@ function pow() {
     }
 }
 
+function gamma(z) {
+    return Math.sqrt(2 * Math.PI / z) * Math.pow((1 / Math.E) * (z + 1 / (12 * z - 1 / (10 * z))), z);
+  }
+
 function fact() {
     if (inputOnDisplay.innerHTML != "") {
-        let string = inputOnDisplay.innerHTML
+        let string = parseFloat(inputOnDisplay.innerHTML)
         inputOnDisplay.innerHTML = ""
-        let result = factorial(string)
-        display(result)
+        let result = gamma(string + 1.00)
         resultOnDisplay.innerHTML = result
     }
 }
 
-function factorial(n) {
-    if (n == 1) {
-        return 1
-    } else {
-        return n * factorial(n - 1)
-    }
-}
 
 function _10pow() {
     let string = inputOnDisplay.innerHTML
@@ -361,78 +397,93 @@ function _10pow() {
 function op_sin(degree) {
     let result = Math.sin(degree * Math.PI / 180)
     inputOnDisplay.innerHTML = ""
-    display(result)
+
     resultOnDisplay.innerHTML = result
 }
 
 function op_cos(degree) {
     let result = Math.cos(degree * Math.PI / 180)
     inputOnDisplay.innerHTML = ""
-    display(result)
+
     resultOnDisplay.innerHTML = result
 }
 
 function op_tan(degree) {
     let result = Math.tan(degree * Math.PI / 180)
     inputOnDisplay.innerHTML = ""
-    display(result)
+
     resultOnDisplay.innerHTML = result
 }
 
 function op_cot(degree) {
     let result = 1 / Math.tan(degree * Math.PI / 180)
     inputOnDisplay.innerHTML = ""
-    display(result)
+
     resultOnDisplay.innerHTML = result
 }
 
 function op_sec(degree) {
     let result = 1 / Math.cos(degree * Math.PI / 180)
     inputOnDisplay.innerHTML = ""
-    display(result)
+
     resultOnDisplay.innerHTML = result
 }
 
 function op_cosec(degree) {
     let result = 1 / Math.sin(degree * Math.PI / 180)
     inputOnDisplay.innerHTML = ""
-    display(result)
     resultOnDisplay.innerHTML = result
 }
 
 function mc() {
     memory_storage = []
-
 }
 function mr() {
-    let last_item = memory_storage[memory_storage.length - 1]
-    inputOnDisplay.innerHTML = ""
-    display(last_item)
-    resultOnDisplay.innerHTML = last_item
+    if (memory_storage.length == 0) {
+        alert("no thing to recall")
+    } else {
+        let last_item = memory_storage[memory_storage.length - 1]
+        inputOnDisplay.innerHTML = ""
+        display(last_item)
+        resultOnDisplay.innerHTML = last_item
+    }
 }
 function ms() {
     let string = inputOnDisplay.innerHTML
-    let int = parseInt(string)
-    memory_storage.push(int)
+    if (string == 0 | string == '0' | string == null | string == undefined) {
+    } else {
+        let int = parseInt(string)
+        memory_storage.push(int)
+        clear_screen()
+    }
 }
 function m_plus() {
-    let string = inputOnDisplay.innerHTML
-    let int = parseInt(string)
-    let last_item = memory_storage[memory_storage.length - 1]
-    last_item += int
-    memory_storage[memory_storage.length - 1] = last_item
-    inputOnDisplay.innerHTML = ""
-    display(last_item)
-    resultOnDisplay.innerHTML = last_item
+    if (memory_storage.length == 0) {
+        alert("no thing in memory")
+    } else {
+        let string = inputOnDisplay.innerHTML
+        let int = parseInt(string)
+        let last_item = memory_storage[memory_storage.length - 1]
+        last_item += int
+        memory_storage[memory_storage.length - 1] = last_item
+        inputOnDisplay.innerHTML = ""
+        display(last_item)
+        resultOnDisplay.innerHTML = last_item
+    }
 }
 function m_minus() {
-    let string = inputOnDisplay.innerHTML
-    let int = parseInt(string)
-    let last_item = memory_storage[memory_storage.length - 1]
-    last_item -= int
-    memory_storage[memory_storage.length - 1] = last_item
-    inputOnDisplay.innerHTML = ""
-    display(last_item)
-    resultOnDisplay.innerHTML = last_item
+    if (memory_storage.length == 0) {
+        alert("no thing in memory")
+    } else {
+        let string = inputOnDisplay.innerHTML
+        let int = parseInt(string)
+        let last_item = memory_storage[memory_storage.length - 1]
+        last_item -= int
+        memory_storage[memory_storage.length - 1] = last_item
+        inputOnDisplay.innerHTML = ""
+        display(last_item)
+        resultOnDisplay.innerHTML = last_item
+
+    }
 }
 
